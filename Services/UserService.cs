@@ -35,5 +35,10 @@ namespace WebTextForum.Services
 
             return response;
         }
+
+        public UserType GetUserType(int userId)
+        {
+            return _unitOfWork.UserRepo.GetUserType(userId);
+        }
     }
 }

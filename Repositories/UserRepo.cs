@@ -54,5 +54,22 @@ namespace WebTextForum.Repositories
 
             return _sqlConnection.Query<User>(sql, new {userId}, transaction: _dbTransaction).ToList();
         }
+
+        public UserType GetUserType(int userId)
+        {
+            var sql = @"
+                    SELECT 
+	                    [tUserTypes].[UserTypeId],
+	                    [tUserTypes].[Name],
+	                    [tUserTypes].[Code],
+	                    [tUserTypes].[Description]
+                    FROM 
+	                    [tUsers] 
+	                    LEFT JOIN [tUserTypes] ON [tUserTypes].[UserTypeId] = [tUsers].[UserTypeId]
+                    WHERE 
+	                    [tUsers].[UserId] = @userId";
+
+            return _sqlConnection.QuerySingle<UserType>(sql, new { userId }, transaction: _dbTransaction);
+        }
     }
 }

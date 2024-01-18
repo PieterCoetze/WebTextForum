@@ -9,6 +9,7 @@ namespace WebTextForum.Repositories.UnitOfWork
         IPostRepo PostRepo { get; set; }
         ICommentRepo CommentRepo { get; set; }
         ILikeRepo LikeRepo { get; set; }
+        IFlagRepo FlagRepo { get; set; }
         void Commit();
         void Dispose();
     }

@@ -12,13 +12,15 @@ namespace WebTextForum.Services
         private readonly IJwtService _jwtService;
         private readonly ICommentService _commentService;
         private readonly ILikeService _likeService;
+        private readonly IFlagService _flagService;
 
-        public PostService(IUnitOfWork unitOfWork, IJwtService jwtService, ICommentService commentService, ILikeService likeService)
+        public PostService(IUnitOfWork unitOfWork, IJwtService jwtService, ICommentService commentService, ILikeService likeService, IFlagService flagService)
         {
             _unitOfWork = unitOfWork;
             _jwtService = jwtService;
             _commentService = commentService;
             _likeService = likeService;
+            _flagService = flagService;
         }
 
         public Response GetPosts(int? postId)
@@ -33,6 +35,7 @@ namespace WebTextForum.Services
                 {
                     post.Comments = _commentService.GetCommentsForPost(post.PostId).ToArray();
                     post.Likes = _likeService.GetPostLikeCount(post.PostId);
+                    post.Flags = ((List<PostFlag>)_flagService.GetPostFlags(post.PostId).Data).ToArray();
                 }
             }
             catch (Exception ex)
