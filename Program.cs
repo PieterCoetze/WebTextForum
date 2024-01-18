@@ -19,7 +19,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey
-                (Encoding.UTF8.GetBytes(builder.Configuration["JWT_KEY"] ?? "")),
+                (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "")),
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
@@ -35,9 +35,11 @@ builder.Services.AddScoped<IDbTransaction>(s =>
     return conn.BeginTransaction();
 });
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Add services to the container.
 
