@@ -7,5 +7,6 @@ namespace WebTextForum.Services.Interfaces
     {
         Response GetPosts(int? postId);
         Response AddPost(PostDto postDto);
+        Response LikePost(int postId);
     }
 }

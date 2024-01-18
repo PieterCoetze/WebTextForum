@@ -44,5 +44,17 @@ namespace WebTextForum.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost]
+        [Route("LikePost")]
+        public IActionResult LikePost(int postId)
+        {
+            var response = _postService.LikePost(postId);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
     }
 }
