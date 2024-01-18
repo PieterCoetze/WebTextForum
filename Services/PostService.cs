@@ -11,12 +11,14 @@ namespace WebTextForum.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtService _jwtService;
         private readonly ICommentService _commentService;
+        private readonly ILikeService _likeService;
 
-        public PostService(IUnitOfWork unitOfWork, IJwtService jwtService, ICommentService commentService)
+        public PostService(IUnitOfWork unitOfWork, IJwtService jwtService, ICommentService commentService, ILikeService likeService)
         {
             _unitOfWork = unitOfWork;
             _jwtService = jwtService;
             _commentService = commentService;
+            _likeService = likeService;
         }
 
         public Response GetPosts(int? postId)
@@ -30,7 +32,7 @@ namespace WebTextForum.Services
                 foreach (Post post in response.Data)
                 {
                     post.Comments = _commentService.GetCommentsForPost(post.PostId).ToArray();
-                    post.Likes = _unitOfWork.PostRepo.GetPostLikeCount(post.PostId);
+                    post.Likes = _likeService.GetPostLikeCount(post.PostId);
                 }
             }
             catch (Exception ex)
@@ -63,33 +65,11 @@ namespace WebTextForum.Services
             return response;
         }
 
-        public Response LikePost(int postId)
+        public int GetPostOwner(int postId)
         {
-            Response response = new Response() { Message = "Successfully liked post.", Success = true };
+            int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
 
-            try
-            {
-                int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
-
-                if(_unitOfWork.PostRepo.HasLikedPost(postId, userId))
-                {
-                    response.Data = _unitOfWork.PostRepo.RemoveLike(postId, userId);
-                    response.Message = "Successfully removed like.";
-                }
-                else
-                {
-                    response.Data = _unitOfWork.PostRepo.AddLike(postId, userId);
-                }
-
-                _unitOfWork.Commit();
-            }
-            catch (Exception ex)
-            {
-                response.Message = "Unable to like post.";
-                response.Success = false;
-            }
-
-            return response;
+            return _unitOfWork.PostRepo.GetPostOwner(postId);
         }
     }
 }

@@ -44,6 +44,8 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IPostRepo, PostRepo>();
 builder.Services.AddScoped<ICommentRepo, CommentRepo>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ILikeRepo, LikeRepo>();
+builder.Services.AddScoped<ILikeService, LikeService>();
 
 // Add services to the container.
 
