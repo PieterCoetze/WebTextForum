@@ -1,4 +1,5 @@
 ﻿using WebTextForum.Models;
+using WebTextForum.Models.Dto_s;
 using WebTextForum.Repositories.UnitOfWork;
 using WebTextForum.Services.Interfaces;
 
@@ -11,6 +12,11 @@ namespace WebTextForum.Services
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public User AuthenticateUser(UserAuthenticateDto userAuthenticateDto)
+        {
+            return _unitOfWork.UserRepo.AuthenticateUser(userAuthenticateDto);
         }
 
         public Response GetUsers(int? userId)
