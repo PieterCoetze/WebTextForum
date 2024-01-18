@@ -21,7 +21,7 @@ namespace WebTextForum.Services
 
         public Response GetPosts(int? postId)
         {
-            Response response = new Response() { Message = "Successfully retrieved data.", Success = true };
+            Response response = new Response() { Message = "Successfully retrieved posts.", Success = true };
 
             try
             {
@@ -30,11 +30,12 @@ namespace WebTextForum.Services
                 foreach (Post post in response.Data)
                 {
                     post.Comments = _commentService.GetCommentsForPost(post.PostId).ToArray();
+                    post.Likes = _unitOfWork.PostRepo.GetPostLikeCount(post.PostId);
                 }
             }
             catch (Exception ex)
             {
-                response.Message = "Unable to retrieve data.";
+                response.Message = "Unable to retrieve posts.";
                 response.Success = false;
             }
 
@@ -43,7 +44,7 @@ namespace WebTextForum.Services
 
         public Response AddPost(PostDto postDto)
         {
-            Response response = new Response() { Message = "Successfully retrieved data.", Success = true };
+            Response response = new Response() { Message = "Successfully added post.", Success = true };
 
             try
             {
@@ -55,7 +56,36 @@ namespace WebTextForum.Services
             }
             catch (Exception ex)
             {
-                response.Message = "Unable to retrieve data.";
+                response.Message = "Unable to add post.";
+                response.Success = false;
+            }
+
+            return response;
+        }
+
+        public Response LikePost(int postId)
+        {
+            Response response = new Response() { Message = "Successfully liked post.", Success = true };
+
+            try
+            {
+                int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
+
+                if(_unitOfWork.PostRepo.HasLikedPost(postId, userId))
+                {
+                    response.Data = _unitOfWork.PostRepo.RemoveLike(postId, userId);
+                    response.Message = "Successfully removed like.";
+                }
+                else
+                {
+                    response.Data = _unitOfWork.PostRepo.AddLike(postId, userId);
+                }
+
+                _unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Unable to like post.";
                 response.Success = false;
             }
 

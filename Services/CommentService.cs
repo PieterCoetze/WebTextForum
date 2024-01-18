@@ -24,7 +24,7 @@ namespace WebTextForum.Services
 
         public Response AddComment(CommentDto commentDto)
         {
-            Response response = new Response() { Message = "Successfully retrieved data.", Success = true };
+            Response response = new Response() { Message = "Successfully added comment.", Success = true };
 
             try
             {
@@ -36,7 +36,7 @@ namespace WebTextForum.Services
             }
             catch (Exception ex)
             {
-                response.Message = "Unable to retrieve data.";
+                response.Message = "Unable to add comment data.";
                 response.Success = false;
             }
 
