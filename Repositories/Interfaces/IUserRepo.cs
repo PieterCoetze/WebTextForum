@@ -7,5 +7,6 @@ namespace WebTextForum.Repositories.Interfaces
     {
         User AuthenticateUser(UserAuthenticateDto userAuthenticateDto);
         List<User> GetUsers(int? userId);
+        UserType GetUserType(int userId);
     }
 }

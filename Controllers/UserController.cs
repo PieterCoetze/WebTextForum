@@ -30,7 +30,7 @@ namespace WebTextForum.Controllers
             User user = _userService.AuthenticateUser(userAuthenticateDto);
 
             if (user == null)
-                return Unauthorized("No user email found.");
+                return Unauthorized("Invalid username or password.");
 
             string token = _jwtService.GenerateToken(user);
 
