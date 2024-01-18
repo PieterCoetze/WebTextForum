@@ -8,15 +8,17 @@ namespace WebTextForum.Repositories.UnitOfWork
         public IUserRepo UserRepo { get; set; }
         public IPostRepo PostRepo { get; set; }
         public ICommentRepo CommentRepo { get; set; }
+        public ILikeRepo LikeRepo { get; set; }
 
         IDbTransaction _dbTransaction;
 
-        public UnitOfWork(IDbTransaction dbTransaction, IUserRepo userRepo, IPostRepo postRepo, ICommentRepo commentRepo)
+        public UnitOfWork(IDbTransaction dbTransaction, IUserRepo userRepo, IPostRepo postRepo, ICommentRepo commentRepo, ILikeRepo likeRepo)
         {
             UserRepo = userRepo;
             _dbTransaction = dbTransaction;
             PostRepo = postRepo;
             CommentRepo = commentRepo;
+            LikeRepo = likeRepo;
         }
 
         public void Commit()
