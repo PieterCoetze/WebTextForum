@@ -6,13 +6,17 @@ namespace WebTextForum.Repositories.UnitOfWork
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         public IUserRepo UserRepo { get; set; }
+        public IPostRepo PostRepo { get; set; }
+        public ICommentRepo CommentRepo { get; set; }
 
         IDbTransaction _dbTransaction;
 
-        public UnitOfWork(IDbTransaction dbTransaction, IUserRepo userRepo)
+        public UnitOfWork(IDbTransaction dbTransaction, IUserRepo userRepo, IPostRepo postRepo, ICommentRepo commentRepo)
         {
             UserRepo = userRepo;
             _dbTransaction = dbTransaction;
+            PostRepo = postRepo;
+            CommentRepo = commentRepo;
         }
 
         public void Commit()

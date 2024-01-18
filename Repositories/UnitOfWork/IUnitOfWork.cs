@@ -5,6 +5,10 @@ namespace WebTextForum.Repositories.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        public IUserRepo UserRepo { get; set; }
+        IUserRepo UserRepo { get; set; }
+        IPostRepo PostRepo { get; set; }
+        ICommentRepo CommentRepo { get; set; }
+        void Commit();
+        void Dispose();
     }
 }
