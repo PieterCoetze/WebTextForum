@@ -25,13 +25,13 @@ namespace WebTextForum.Services
             _userService = userService;
         }
 
-        public Response GetPosts(int? postId)
+        public Response GetPosts(GetPostDto getPostDto)
         {
             Response response = new Response() { Message = "Successfully retrieved posts.", Success = true };
 
             try
             {
-                response.Data = _unitOfWork.PostRepo.GetPosts(postId);
+                response.Data = _unitOfWork.PostRepo.GetPosts(getPostDto);
 
                 foreach (Post post in response.Data)
                 {
@@ -64,7 +64,7 @@ namespace WebTextForum.Services
                 }
                 else
                 {
-                    response.Data = _unitOfWork.PostRepo.AddPost(postDto, userId);
+                    response.Data = _unitOfWork.PostRepo.GetPosts(new GetPostDto() { PostId = _unitOfWork.PostRepo.AddPost(postDto, userId) });
 
                     _unitOfWork.Commit();
                 }

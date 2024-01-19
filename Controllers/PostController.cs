@@ -23,9 +23,9 @@ namespace WebTextForum.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("GetPosts")]
-        public IActionResult GetPosts(int? postId)
+        public IActionResult GetPosts([FromBody] GetPostDto getPostDto)
         {
-            var response = _postService.GetPosts(postId);
+            var response = _postService.GetPosts(getPostDto);
 
             if (!response.Success)
                 return BadRequest(response);
