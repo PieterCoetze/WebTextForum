@@ -54,7 +54,7 @@ namespace WebTextForum.Repositories
             return _sqlConnection.Query<Comment>(sql, new { postId }, transaction: _dbTransaction).ToList();
         }
 
-        public Comment? AddComment(CommentDto commentDto, int userId)
+        public int AddComment(CommentDto commentDto, int userId)
         {
             var sql = @"
                     INSERT INTO
@@ -76,12 +76,7 @@ namespace WebTextForum.Repositories
 	                )"
             ;
 
-            var commentId = _sqlConnection.QuerySingle<int>(sql, new { commentDto.CommentText, commentDto.PostId, CreatedBy = userId }, transaction: _dbTransaction);
-
-            if (commentId > 0)
-                return GetComment(commentId);
-
-            return null;
+           return _sqlConnection.QuerySingle<int>(sql, new { commentDto.CommentText, commentDto.PostId, CreatedBy = userId }, transaction: _dbTransaction);
         }
     }
 }

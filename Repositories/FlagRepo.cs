@@ -29,7 +29,8 @@ namespace WebTextForum.Repositories
                     FROM 
 	                    [tFlags]
                     WHERE 
-	                    [IsDeleted] = 0";
+	                    [IsDeleted] = 0"
+            ;
 
             return _sqlConnection.Query<Flag>(sql, null, transaction: _dbTransaction).ToList();
         }

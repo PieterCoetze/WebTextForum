@@ -38,7 +38,7 @@ namespace WebTextForum.Services
                 }
                 else
                 {
-                    response.Data = _unitOfWork.CommentRepo.AddComment(commentDto, userId);
+                    response.Data = _unitOfWork.CommentRepo.GetComment(_unitOfWork.CommentRepo.AddComment(commentDto, userId));
 
                     _unitOfWork.Commit();
                 }
