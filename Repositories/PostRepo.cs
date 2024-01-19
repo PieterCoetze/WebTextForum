@@ -49,7 +49,7 @@ namespace WebTextForum.Repositories
 
                 if (getPostDto.SortBy != null)
                 {
-                    string sortBy = GetSortByColumn(getPostDto.SortBy);
+                    string sortBy = GetSortByColumn(getPostDto.SortBy) ?? "[tPosts].[PostId]";
 
                     if (sortBy != null)
                         sql += $" ORDER BY {sortBy}";
