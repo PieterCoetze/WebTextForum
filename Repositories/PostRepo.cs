@@ -31,7 +31,6 @@ namespace WebTextForum.Repositories
                 FROM 
 	                [tPosts]
 	                LEFT JOIN [tUsers] ON [tUsers].[UserId] = [tPosts].[CreatedBy]
-	                LEFT JOIN [tPostFlags] ON [tPostFlags].[PostId] = [tPosts].[PostId]
                 WHERE 
 	                [tPosts].[PostId] = ISNULL(@postID, [tPosts].[PostId]) 
                     AND [tUsers].[UserId] = ISNULL(@createdBy, [tUsers].[UserId]) 
