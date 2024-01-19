@@ -61,8 +61,6 @@ namespace WebTextForum.Services
             {
                 int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
 
-                // _unitOfWork.FlagRepo.CheckIfPostHasFlag(postFlagDto.FlagId, postFlagDto.PostId);
-
                 if (_userService.GetUserType(userId).Code == "MOD")
                 {
                     if(_unitOfWork.FlagRepo.CheckIfPostHasFlag(postFlagDto.FlagId, postFlagDto.PostId))
