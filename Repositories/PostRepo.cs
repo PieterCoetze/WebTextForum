@@ -89,8 +89,8 @@ namespace WebTextForum.Repositories
 		                [CreatedBy],
 		                [CreatedDate]
 	                )
-                OUTPUT INSERTED.PostId
-                VALUES
+                    OUTPUT INSERTED.PostId
+                    VALUES
 	                (
 		                @postText,
 		                @userId,

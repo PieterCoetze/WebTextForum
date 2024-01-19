@@ -5,7 +5,8 @@ namespace WebTextForum.Repositories.Interfaces
 {
     public interface ICommentRepo
     {
+        Comment GetComment(int commentId);
         List<Comment> GetCommentsForPost(int postId);
-        Comment? AddComment(CommentDto commentDto, int userId);
+        int AddComment(CommentDto commentDto, int userId);
     }
 }
