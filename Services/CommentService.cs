@@ -10,11 +10,13 @@ namespace WebTextForum.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtService _jwtService;
+        private readonly IUserService _userService;
 
-        public CommentService(IUnitOfWork unitOfWork, IJwtService jwtService)
+        public CommentService(IUnitOfWork unitOfWork, IJwtService jwtService, IUserService userService)
         {
             _unitOfWork = unitOfWork;
             _jwtService = jwtService;
+            _userService = userService;
         }
 
         public List<Comment> GetCommentsForPost(int postId)
@@ -30,9 +32,16 @@ namespace WebTextForum.Services
             {
                 int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
 
-                response.Data = _unitOfWork.CommentRepo.AddComment(commentDto, userId);
+                if (_userService.GetUserType(userId).Code == "MOD")
+                {
+                    response.Message = "Moderators cannot comment on posts.";
+                }
+                else
+                {
+                    response.Data = _unitOfWork.CommentRepo.AddComment(commentDto, userId);
 
-                _unitOfWork.Commit();
+                    _unitOfWork.Commit();
+                }
             }
             catch (Exception ex)
             {

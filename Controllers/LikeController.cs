@@ -19,7 +19,7 @@ namespace WebTextForum.Controllers
         }
 
         [HttpPost]
-        [Route("LikePost")]
+        [Route("LikePost/{postId}")]
         public IActionResult LikePost(int postId)
         {
             var response = _likeService.LikePost(postId);

@@ -10,11 +10,13 @@ namespace WebTextForum.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtService _jwtService;
+        private readonly IUserService _userService;
 
-        public LikeService(IUnitOfWork unitOfWork, IJwtService jwtService)
+        public LikeService(IUnitOfWork unitOfWork, IJwtService jwtService, IUserService userService)
         {
             _unitOfWork = unitOfWork;
             _jwtService = jwtService;
+            _userService = userService;
         }
 
         public int GetPostLikeCount(int postId)
@@ -37,7 +39,11 @@ namespace WebTextForum.Services
             {
                 int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
 
-                if (userId == _unitOfWork.PostRepo.GetPostOwner(postId))
+                if (_userService.GetUserType(userId).Code == "MOD")
+                {
+                    response.Message = "Moderators cannot like posts.";
+                }
+                else if (userId == _unitOfWork.PostRepo.GetPostOwner(postId))
                 {
                     response.Message = "Users cannot like their own posts.";
                 }
