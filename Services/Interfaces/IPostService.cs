@@ -5,7 +5,7 @@ namespace WebTextForum.Services.Interfaces
 {
     public interface IPostService
     {
-        Response GetPosts(int? postId);
+        Response GetPosts(GetPostDto getPostDto);
         Response AddPost(PostDto postDto);
         int GetPostOwner(int postId);
     }

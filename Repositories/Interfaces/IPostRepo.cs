@@ -5,8 +5,8 @@ namespace WebTextForum.Repositories.Interfaces
 {
     public interface IPostRepo
     {
-        List<Post> GetPosts(int? postId);
+        List<Post> GetPosts(GetPostDto getPostDto);
         int GetPostOwner(int postId);
-        Post AddPost(PostDto postDto, int userId);
+        int AddPost(PostDto postDto, int userId);
     }
 }
