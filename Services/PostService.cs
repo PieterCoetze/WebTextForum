@@ -13,14 +13,16 @@ namespace WebTextForum.Services
         private readonly ICommentService _commentService;
         private readonly ILikeService _likeService;
         private readonly IFlagService _flagService;
+        private readonly IUserService _userService;
 
-        public PostService(IUnitOfWork unitOfWork, IJwtService jwtService, ICommentService commentService, ILikeService likeService, IFlagService flagService)
+        public PostService(IUnitOfWork unitOfWork, IJwtService jwtService, ICommentService commentService, ILikeService likeService, IFlagService flagService, IUserService userService)
         {
             _unitOfWork = unitOfWork;
             _jwtService = jwtService;
             _commentService = commentService;
             _likeService = likeService;
             _flagService = flagService;
+            _userService = userService;
         }
 
         public Response GetPosts(int? postId)
@@ -55,9 +57,17 @@ namespace WebTextForum.Services
             {
                 int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
 
-                response.Data = _unitOfWork.PostRepo.AddPost(postDto, userId);
 
-                _unitOfWork.Commit();
+                if (_userService.GetUserType(userId).Code == "MOD")
+                {
+                    response.Message = "Moderators cannot post.";
+                }
+                else
+                {
+                    response.Data = _unitOfWork.PostRepo.AddPost(postDto, userId);
+
+                    _unitOfWork.Commit();
+                }
             }
             catch (Exception ex)
             {
