@@ -61,11 +61,20 @@ namespace WebTextForum.Services
             {
                 int userId = int.Parse(_jwtService?.GetClaim(ClaimTypes.NameIdentifier));
 
+                // _unitOfWork.FlagRepo.CheckIfPostHasFlag(postFlagDto.FlagId, postFlagDto.PostId);
+
                 if (_userService.GetUserType(userId).Code == "MOD")
                 {
-                    response.Data = _unitOfWork.FlagRepo.PostFlag(postFlagDto, userId);
+                    if(_unitOfWork.FlagRepo.CheckIfPostHasFlag(postFlagDto.FlagId, postFlagDto.PostId))
+                    {
+                        response.Message = $"This post has already been flagged with {postFlagDto.FlagId}.";
+                    }
+                    else
+                    {
+                        response.Data = _unitOfWork.FlagRepo.PostFlag(postFlagDto, userId);
 
-                    _unitOfWork.Commit();
+                        _unitOfWork.Commit();
+                    }
                 }
                 else
                 {

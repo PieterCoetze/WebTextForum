@@ -7,6 +7,7 @@ namespace WebTextForum.Repositories.Interfaces
     {
         List<Flag> GetFlags();
         List<PostFlag> GetPostFlags(int postId);
+        bool CheckIfPostHasFlag(int flagId, int postId);
         bool PostFlag(PostFlagDto postFlagDto, int userId);
     }
 }
