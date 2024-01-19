@@ -54,6 +54,22 @@ namespace WebTextForum.Repositories
             return _sqlConnection.Query<PostFlag>(sql, new { postId }, transaction: _dbTransaction).ToList();
         }
 
+        public bool CheckIfPostHasFlag(int flagId, int postId)
+        {
+            var sql = @"
+                SELECT
+                    1
+                FROM 
+	                [tPostFlags]
+                WHERE 
+                    [tPostFlags].[PostId] = @postId AND
+                    [tPostFlags].[FlagId] = @flagId AND
+	                [tPostFlags].[IsDeleted] = 0 
+            ";
+
+            return _sqlConnection.Query(sql, new { postId, flagId }, transaction: _dbTransaction).Any();
+        }
+
         public bool PostFlag(PostFlagDto postFlagDto, int userId)
         {
             var sql = @"
